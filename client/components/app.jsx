@@ -17,7 +17,15 @@ module.exports = React.createClass({
     var api = new Api(this.state.participantEmail, this.props.participantHash);
     api.me().then(function(user) {
       return api.workshops().then(function(allWorkshops) {
-        self.setState({loading: false, initialized: true, user: user, workshops: allWorkshops});
+        return api.participantWorkshops().then(function(participantWorkshops) {
+          self.setState({
+            loading: false,
+            initialized: true,
+            user: user,
+            workshops: allWorkshops,
+            participantWorkshops: participantWorkshops
+          });
+        });
       });
     }).fail(function(err) {
       self.setState({error: err, loading: false});
@@ -34,7 +42,7 @@ module.exports = React.createClass({
         <button disabled={this.state.loading} onClick={this.login}>Log in</button>
       </div>
       ) : (
-      <WorkshopSelector workshops={this.state.workshops} participant={this.state.user} />
+      <WorkshopSelector participantWorkshops={this.state.participantWorkshops} workshops={this.state.workshops} participant={this.state.user} />
       );
   }
 });

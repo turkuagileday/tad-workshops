@@ -9,5 +9,9 @@ module.exports = function(app) {
   var Workshops = ret.Workshops = app.db.Collection.extend({
     model: Workshop
   });
+  var ParticipantWorkshop = ret.ParticipantWorkshop = require('./participant-workshop')(app);
+  var ParticipantWorkshops = ret.ParticipantWorkshops = app.db.Collection.extend({
+    model: ParticipantWorkshop
+  });
   return ret;
 };

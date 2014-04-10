@@ -4,7 +4,7 @@ var React = require('react'),
 
 module.exports = React.createClass({
   getInitialState: function() {
-    return {};
+    return {workshopAttends: this.props.participantWorkshops};
   },
   onWorkshopChange: function(ev) {
     var obj = {};
@@ -14,14 +14,22 @@ module.exports = React.createClass({
     });
   },
   save: function(ev) {
-    console.log(this.state.workshopAttends);
+    var api = new Api(this.props.participant.email, this.props.participant.hash);
+    this.setState({saving: true});
+    var self = this;
+    api.saveParticipantWorkshops(this.state.workshopAttends).then(function() {
+      self.setState({saving: false});
+    }).fail(function() {
+      alert('Failed to persist');
+      self.setState({saving: false});
+    });
   },
   render: function() {
     var comp = this;
     var workshops = _.groupBy(this.props.workshops, 'date');
     var createWorkshopRowCell = function(ws) {
       var inputName = ws.date + '_' + ws.slot;
-      return <td><label><input type="radio" name={inputName} value={ws.id} onChange={comp.onWorkshopChange} /> <a target="_blank" href={ws.url}>{ws.name}</a></label></td>;
+      return <td><label><input checked={comp.state.workshopAttends[inputName] == ws.id} type="radio" name={inputName} value={ws.id} onChange={comp.onWorkshopChange} /> <a target="_blank" href={ws.url}>{ws.name}</a></label></td>;
     };
     var createWorkshopTable = function(date) {
       var workshopsBySlot = _.groupBy(workshops[date], 'slot');
@@ -48,7 +56,7 @@ module.exports = React.createClass({
     return <div className="row">
       <h3>Workshops</h3>
       {_.keys(workshops).map(createWorkshopTable)}
-      <button onClick={this.save}>Save</button>
+      <button disabled={this.state.saving} onClick={this.save}>Save</button>
     </div>;
   }
 });
