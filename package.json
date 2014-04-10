@@ -32,7 +32,8 @@
     "envify": "~1.2.1",
     "react": "~0.10.0",
     "superagent": "~0.17.0",
-    "q": "~1.0.1"
+    "q": "~1.0.1",
+    "mailgun": "~0.4.2"
   },
   "devDependencies": {
     "sqlite3": "~2.2.1"
