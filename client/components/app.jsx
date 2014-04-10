@@ -17,7 +17,7 @@ module.exports = React.createClass({
     var api = new Api(this.state.participantEmail, this.props.participantHash);
     api.me().then(function(user) {
       return api.workshops().then(function(allWorkshops) {
-        self.setState({loading: false, initialized: true});
+        self.setState({loading: false, initialized: true, user: user, workshops: allWorkshops});
       });
     }).fail(function(err) {
       self.setState({error: err, loading: false});
@@ -34,7 +34,7 @@ module.exports = React.createClass({
         <button disabled={this.state.loading} onClick={this.login}>Log in</button>
       </div>
       ) : (
-      <WorkshopSelector participantHash={this.props.participantHash} participantEmail={this.state.participantEmail} />
+      <WorkshopSelector workshops={this.state.workshops} participant={this.state.user} />
       );
   }
 });

@@ -28,5 +28,10 @@ app.get('/participants/me', function(req, res, next) {
   res.send({message: 'foo'});
 });
 
-app.get('/participants/:hash/:email', function(req, res, next) {
+app.get('/workshops', function(req, res, next) {
+  var col = new req.app.parent.models.Workshops();
+  col.fetch().then(function() {
+    res.send(col.toJSON());
+  }, next);
 });
+
