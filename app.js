@@ -18,13 +18,13 @@ nunjucks.configure(__dirname + '/views', {
 });
 
 
-app.get('/application.js', browserify('./client/index.js', ['reactify']));
+app.get('/application.js', browserify('./client/index.js', {transform: ['reactify']}));
 app.use('/api', require('./api'));
 app.get('/:hash', function(req, res, next) {
   var hash = req.param('hash');
   new app.models.Participant({hash: hash}).fetch().then(function(model) {
     if (!model) return next();
-    res.render('app.html');
+    res.render('app.html', model.toJSON());
   });
 
 });

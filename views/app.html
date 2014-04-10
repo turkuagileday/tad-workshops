@@ -2,6 +2,15 @@
 
 {% block content %}
 <div class="row">
-  <h2>Workshops</h2>
+  <p>Hello, {{name}}</p>
 </div>
+<div class="row" id="application">
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="/application.js"></script>
+<script>
+startApplication('{{hash}}');
+</script>
 {% endblock %}
