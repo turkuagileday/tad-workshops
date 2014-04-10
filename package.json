@@ -1,0 +1,36 @@
+{
+  "name": "tad-workshops",
+  "version": "0.0.1",
+  "description": "tad-workshops =============",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-server": "supervisor -e js,html app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/turkuagileday/tad-workshops.git"
+  },
+  "author": "Niklas Närhinen <niklas@narhinen.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/turkuagileday/tad-workshops/issues"
+  },
+  "dependencies": {
+    "express": "~4.0.0",
+    "browserify-middleware": "~2.5.0",
+    "knex": "~0.5.13",
+    "bookshelf": "~0.6.10",
+    "pg": "~3.0.1",
+    "reactify": "~0.11.0",
+    "hbs": "~2.6.0",
+    "nunjucks": "~1.0.4",
+    "supervisor": "~0.5.7",
+    "underscore": "~1.6.0",
+    "node-uuid": "~1.4.1",
+    "body-parser": "~1.0.1"
+  },
+  "devDependencies": {
+    "sqlite3": "~2.2.1"
+  }
+}
