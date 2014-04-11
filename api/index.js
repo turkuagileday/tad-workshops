@@ -1,7 +1,8 @@
 var express = require('express'),
 _ = require('underscore'),
 uuid = require('node-uuid'),
-Q = require('q');
+Q = require('q'),
+Mailgun = require('mailgun').Mailgun;
 
 app = express();
 app.use(require('body-parser')());
@@ -9,6 +10,7 @@ app.use(require('body-parser')());
 module.exports = app;
 
 app.use(function(req, res, next) {
+  if (req.header('X-API-Admin') && req.path === '/participants') return next();
   if (!req.header('X-API-Hash') || !req.header('X-API-Email')) return res.send(401);
   var model = new req.app.parent.models.Participant({hash: req.header('X-API-Hash'), email: req.header('X-API-Email')});
   model.fetch().then(function(model) {
@@ -18,11 +20,16 @@ app.use(function(req, res, next) {
 });
 
 app.post('/participants', function(req, res, next) {
-  return res.send(404);
+  if (process.env.NODE_ENV === 'production' && req.header('X-API-Admin') !== process.env.ADMIN_KEY) return res.send(403);
   var data = _.extend({hash: uuid.v4()}, req.body);
   var model = new req.app.parent.models.Participant(data);
   model.save().then(function(model) {
-    res.send(201, model.toJSON());
+    var mg = new Mailgun(process.env.MAILGUN_API_KEY);
+    var url = process.env.NODE_ENV === 'production' ? 'https://' : 'http://';
+    url += req.header('Host') + '/' + model.get('hash');
+    mg.sendText('Turku Agile Day <info@turkuagileday.fi>', model.get('email'), 'Choose your workshops', 'Hi there!\nYou can choose in which workshops to participate by following the following link: ' + url + '\n\nBest regards,\nTurku Agile Day Organizers', function() {
+      res.send(201, model.toJSON());
+    });
   }, next);
 });
 
