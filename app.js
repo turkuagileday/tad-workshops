@@ -25,7 +25,7 @@ app.get('/:hash', function(req, res, next) {
   new app.models.Participant({hash: hash}).fetch().then(function(model) {
     if (!model) return next();
     res.render('app.html', model.toJSON());
-  });
+  }, next);
 
 });
 app.get('/', function(req, res) {
