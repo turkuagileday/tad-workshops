@@ -18,6 +18,7 @@ app.use(function(req, res, next) {
 });
 
 app.post('/participants', function(req, res, next) {
+  return res.send(404);
   var data = _.extend({hash: uuid.v4()}, req.body);
   var model = new req.app.parent.models.Participant(data);
   model.save().then(function(model) {

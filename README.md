@@ -8,6 +8,7 @@ Usage
 git clone https://github.com/turkuagileday/tad-workshops.git
 cd tad-workshops
 npm install
+npm run migrate
 npm run dev-server
 node insert-workshops.js
 node insert-users.js "your@email.com" "John Doe"

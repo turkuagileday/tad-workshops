@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev-server": "supervisor -e js,html app.js"
+    "dev-server": "supervisor -e js,html app.js",
+    "migrate": "knex migrate:latest",
+    "insert-workshops": "node insert-workshops.js"
   },
   "repository": {
     "type": "git",
