@@ -28,6 +28,7 @@ var emailBody = function(link, additionalText) {
 app.post('/participants', function(req, res, next) {
   if (process.env.NODE_ENV === 'production' && req.header('X-API-Admin') !== process.env.ADMIN_KEY) return res.send(403);
   var data = _.extend({hash: uuid.v4()}, req.body);
+  delete data.participantType;
   var model = new req.app.parent.models.Participant(data);
   model.save().then(function(model) {
     var mg = new Mailgun(process.env.MAILGUN_API_KEY);
