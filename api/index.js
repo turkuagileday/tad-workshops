@@ -20,7 +20,7 @@ app.use(function(req, res, next) {
   }, next);
 });
 
-var emailTmpl = fs.readFileSync(__dirname + '/assets/email.tpl');
+var emailTmpl = fs.readFileSync(__dirname + '/assets/email.tpl', 'utf8');
 var emailBody = function(link, additionalText) {
   return emailTmpl.replace('[LINK]', link).replace('[ADDITIONAL_TEXT]', additionalText);
 };
