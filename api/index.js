@@ -86,7 +86,14 @@ app.put('/participants/me/workshops', function(req, res, next) {
 app.get('/workshops', function(req, res, next) {
   var col = new req.app.parent.models.Workshops();
   col.fetch().then(function() {
-    res.send(col.toJSON());
+    var knex = req.app.parent.db.knex;
+    knex('participant_workshops').count('participant_id').column('workshop_id').groupBy('workshop_id').then(function(q) {
+      res.send(col.toJSON().map(function(w) {
+        var wp = _.find(q, function(one) { return one.workshop_id === w.id; }),
+            ac = wp ? wp['count("participant_id")'] || 0 : 0;
+        return _.extend({attendees: ac}, w);
+      }));
+    }, next);
   }, next);
 });
 

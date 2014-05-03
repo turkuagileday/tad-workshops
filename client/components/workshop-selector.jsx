@@ -29,7 +29,12 @@ module.exports = React.createClass({
     var workshops = _.groupBy(this.props.workshops, 'date');
     var createWorkshopRowCell = function(ws) {
       var inputName = ws.date + '_' + ws.slot;
-      return <td><label><input checked={comp.state.workshopAttends[inputName] == ws.id} type="radio" name={inputName} value={ws.id} onChange={comp.onWorkshopChange} /> <a target="_blank" href={ws.url}>{ws.name}</a></label></td>;
+      return (
+          <td>
+            <label>
+              <input checked={comp.state.workshopAttends[inputName] == ws.id} disabled={ws.attendees == ws.max_attendees} type="radio" name={inputName} value={ws.id} onChange={comp.onWorkshopChange} /> <a target="_blank" href={ws.url}>{ws.name}</a> ({ws.attendees}/{ws.max_attendees})
+            </label>
+          </td>);
     };
     var createWorkshopTable = function(date) {
       var workshopsBySlot = _.groupBy(workshops[date], 'slot');

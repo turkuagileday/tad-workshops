@@ -9,12 +9,12 @@ var Workshop = DB.Model.extend({
 });
 
 var workshops = [
-  {name: 'Listening++', slot: 1, url: 'http://turkuagileday.fi/topics/#listening', date: '2014-05-12'},
-  {name: 'The Agile-ish Github Flow', slot: 1, url: 'http://turkuagileday.fi/topics/#github-flow', date: '2014-05-12'},
-  {name: 'Retrospective facilitation 101', slot: 1, url: 'http://turkuagileday.fi/topics/#retrospective-facilitation', date: '2014-05-12'},
-  {name: 'Pitching Agile', slot: 2, url: 'http://turkuagileday.fi/topics/#pitching-agile', date: '2014-05-12'},
-  {name: 'TBA', slot: 2, url: '', date: '2014-05-12'},
-  {name: 'TBA', slot: 2, url: '', date: '2014-05-12'},
+  {name: 'Listening++', slot: 1, url: 'http://turkuagileday.fi/topics/#listening', date: '2014-05-12', max_attendees: 30},
+  {name: 'The Agile-ish Github Flow', slot: 1, url: 'http://turkuagileday.fi/topics/#github-flow', date: '2014-05-12', max_attendees: 30},
+  {name: 'Introduction to Retrospective Facilitation', slot: 1, url: 'http://turkuagileday.fi/topics/#retrospective-facilitation', date: '2014-05-12', max_attendees: 30},
+  {name: 'Pitching Agile', slot: 2, url: 'http://turkuagileday.fi/topics/#pitching-agile', date: '2014-05-12', max_attendees: 30},
+  {name: 'The Mikado Method', slot: 2, url: 'http://turkuagileday.fi/topics/#mikado-method', date: '2014-05-12', max_attendees: 30},
+  {name: 'Test-driven development with Lego Robots', slot: 2, url: 'http://turkuagileday.fi/topics/#lego-robots', date: '2014-05-12', max_attendees: 30},
 ];
 
 workshops.reduce(function(pr, ws) {
