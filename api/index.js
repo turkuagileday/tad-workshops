@@ -2,6 +2,7 @@ var express = require('express'),
 _ = require('underscore'),
 uuid = require('node-uuid'),
 Q = require('q'),
+fs = require('fs'),
 Mailgun = require('mailgun').Mailgun;
 
 app = express();
@@ -19,6 +20,11 @@ app.use(function(req, res, next) {
   }, next);
 });
 
+var emailTmpl = fs.readFileSync(__dirname + '/assets/email.tpl');
+var emailBody = function(link, additionalText) {
+  return emailTmpl.replace('[LINK]', link).replace('[ADDITIONAL_TEXT]', additionalText);
+};
+
 app.post('/participants', function(req, res, next) {
   if (process.env.NODE_ENV === 'production' && req.header('X-API-Admin') !== process.env.ADMIN_KEY) return res.send(403);
   var data = _.extend({hash: uuid.v4()}, req.body);
@@ -27,7 +33,16 @@ app.post('/participants', function(req, res, next) {
     var mg = new Mailgun(process.env.MAILGUN_API_KEY);
     var url = process.env.NODE_ENV === 'production' ? 'https://' : 'http://';
     url += req.header('Host') + '/' + model.get('hash');
-    mg.sendText('Turku Agile Day <info@turkuagileday.fi>', model.get('email'), 'Choose your workshops', 'Hi there!\nYou can choose in which workshops to participate by following the following link: ' + url + '\n\nBest regards,\nTurku Agile Day Organizers', function() {
+    var additionalText = '';
+    if (req.body.participantType) {
+      if (req.body.participantType == 'sponsor') {
+        additionalText = 'As a sponsor representative you have the advantage of making the choice before other guests, whose chance starts on the 7th of May.';
+      }
+      if (req.body.participantType == 'earlyBird') {
+        additionalText = 'As an early bird registrant you have the advantage of making the choice before other guests, whose chance starts on the 7th of May.';
+      }
+    }
+    mg.sendText('Turku Agile Day <info@turkuagileday.fi>', model.get('email'), 'Turku Agile Day 2014 - Choose your workshops', emailBody(url, additionalText), function() {
       res.send(201, model.toJSON());
     });
   }, next);
