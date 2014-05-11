@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row">
+  <h1>Workshops</h1>
+  {% for workshop in workshops %}
+  <h2>{{ workshop.name }}</h2>
+  <ul>
+    {% for participant in workshop.participants %}
+    <li>{{ participant.name }}</li>
+    {% endfor %}
+  </ul>
+  {% endfor %}
+</div>
+{% endblock %}
+
+{% block styles %}
+<style type="text/css">
+h2 {
+  page-break-before: always;
+}
+</style>
+{% endblock %}
